@@ -1,5 +1,13 @@
 # python-telegram-bot-app
 
+Here will be step by step guide about how to deploy telegram bot to VPS running Ubuntu with Django pre-installed.
+
+### Roadmap:
+- hard-code and manual deploy
+- external DB connect
+- containerized (docker?)
+- automatic deploy
+- monitoring and alerting
 
 ## Secure Nginx with Let's Encrypt
 
@@ -15,7 +23,7 @@ sudo apt install certbot python3-certbot-nginx
 As noted in the prerequisites, you should already have a registered domain and an Nginx server block for that domain. As an example, this article uses the domain example.com.
 To check whether it is set up correctly, open the Nginx configuration file:
 ```
-sudo nano /etc/nginx/sites-available/example.com
+sudo vim /etc/nginx/sites-available/example.com
 ```
 Then, locate the server_name directive and make sure it is set to your domain name. As you want to include the domain name with and without the www. prefix, the line should look similar to the one below:
 ```

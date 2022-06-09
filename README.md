@@ -10,7 +10,7 @@ Here will be step by step guide about how to deploy telegram bot to VPS running 
 - monitoring and alerting
 
 ## Secure Nginx with Let's Encrypt
->You can connect your localhost server or VPS, to telegram severs without setting any SSL Certificates. So firstly you need to secure connection to our domain (if it not set by your VPS provider)
+>You can connect your localhost server or VPS, to telegram severs without setting any SSL Certificates. So firstly you need to secure connection to own domain (if it not set by your VPS provider)
 
 ### Step 1: Install Certbot
 Certbot is an open-source software tool for automatically enabling HTTPS using Let’s Encrypt certificates.

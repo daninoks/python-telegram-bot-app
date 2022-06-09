@@ -39,7 +39,7 @@ Nginx HTTP (v6)            ALLOW        Anywhere (v6)
 **Nginx HTTPS (opens port 443 – encrypted traffic)**
 **Nginx Full (opens port 80 and 443)**
 
-#### 2. To allow encrypted traffic, you can either add the Nginx HTTPS profile or use Nginx Full and delete the existing Nginx HTTP rule:
+2. To allow encrypted traffic, you can either add the Nginx HTTPS profile or use Nginx Full and delete the existing Nginx HTTP rule:
 
 ##### Allow Nginx HTTPS traffic by running the command:
 ```
@@ -52,7 +52,7 @@ sudo ufw deny 'Nginx HTTP'
 ```
 sudo ufw allow 'Nginx Full'
 ```
-#### 3. Verify you added a rule that allows HTTPS traffic by using the **ufw status** command.
+3. Verify you added a rule that allows HTTPS traffic by using the **ufw status** command.
 ```
 $ sudo ufw status | grep Nginx
 Nginx HTTPS                ALLOW       Anywhere                  

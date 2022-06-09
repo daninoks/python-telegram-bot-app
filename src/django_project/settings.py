@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-import environ
 # import logging
 
 # # Default logger:
@@ -21,15 +20,11 @@ import environ
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-# Initialise environment variables
-env = environ.Env()
-environ.Env.read_env()
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = 'V3eouvgnGkmVR1RFn0exnojfYp7q5BxqZavQkpgg78il7EUQ5i9N5JBYW1Appf6X'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -136,9 +131,8 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 # Bot settings:
-# TOKEN = '5497164468:AAEhn_kbJz-y0UDgWghSzlj8ktNsjmOUf3A'
-TOKEN = env('TOKEN')
-# os.environ['TOKEN'] = '5497164468:AAEhn_kbJz-y0UDgWghSzlj8ktNsjmOUf3A'
+TOKEN = '5497164468:AAEhn_kbJz-y0UDgWghSzlj8ktNsjmOUf3A'
+os.environ['TOKEN'] = '5497164468:AAEhn_kbJz-y0UDgWghSzlj8ktNsjmOUf3A'
 # # Logging:
 # LOGGING = {
 #     'loggers': {

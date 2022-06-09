@@ -43,7 +43,7 @@ Nginx HTTP (v6)            ALLOW        Anywhere (v6)
 
 ##### Allow Nginx HTTPS traffic by running the command:
 ```
-sudo ufw``` allow 'Nginx HTTPS'
+sudo ufw allow 'Nginx HTTPS'
 ```
 ##### Remove Nginx HTTP and use Nginx Full instead with:
 ```

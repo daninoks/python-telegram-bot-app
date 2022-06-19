@@ -2,6 +2,7 @@ from django.shortcuts import render
 
 import json
 import os
+import environ
 
 import requests
 from django.http import JsonResponse
@@ -13,8 +14,18 @@ from testApp.models import (
     Message,
 )
 
+from telegram import (
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+)
+
+# Initialise environment variables
+env = environ.Env()
+environ.Env.read_env()
+
 TELEGRAM_URL = "https://api.telegram.org/bot"
-TUTORIAL_BOT_TOKEN = '5497164468:AAEhn_kbJz-y0UDgWghSzlj8ktNsjmOUf3A'
+# TUTORIAL_BOT_TOKEN = '5497164468:AAEhn_kbJz-y0UDgWghSzlj8ktNsjmOUf3A'
+TUTORIAL_BOT_TOKEN = env('TOKEN')
 # os.getenv("TOKEN", "error_token")
 # print(TUTORIAL_BOT_TOKEN)
 # print(os.getenv("TOKEN"))
@@ -61,7 +72,7 @@ class TutorialBotView(View):
         # text = text.lstrip("/")
         chatIDtmp = t_data["message"]["chat"]["id"]
         # msg = request.body
-        msg = f"{t_data}" + f"HELLODUDE\n\n" + f"{t_text}"
+        msg = f"{t_data}" + f"HELLODUDE2222\n\n" + f"{t_text}"
         self.send_message(msg, t_chat["id"])
         # chat = tb_tutorial_collection.find_one({"chat_id": t_chat["id"]})
         # if not chat:
@@ -90,11 +101,44 @@ class TutorialBotView(View):
 
         return JsonResponse({"ok": "POST request processed"})
 
+# {
+#     "inline_keyboard": [[
+#         {
+#             "text": "A",
+#             "callback_data": "A1"
+#         },
+#         {
+#             "text": "B",
+#             "callback_data": "C1"
+#         },
+#     ]]
+# },
+
     @staticmethod
     def send_message(message, chat_id):
+        # keyboard = [
+        #     [InlineKeyboardButton("Log In", callback_data=str("log_in"))],
+        # ]
+        # reply_markup = InlineKeyboardMarkup(keyboard)
+        reply_markup1 = "133313131323425342563245"
+        keyboard = {
+            "inline_keyboard": [[
+                {
+                    "text": "A",
+                    "callback_data": "A1"
+                },
+                {
+                    "text": "B",
+                    "callback_data": "C1"
+                }
+            ]]
+        }
+        # "parse_mode": "Markdown",
+        #             "reply_markup": reply_markup,
         data = {
             "chat_id": chat_id,
-            "text": message,
+            "text": reply_markup1,
+            "reply_markup": json.dumps(keyboard),
             "parse_mode": "Markdown",
         }
         response = requests.post(

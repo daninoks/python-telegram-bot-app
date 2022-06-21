@@ -12,24 +12,32 @@ Set bot token, url, admin chat_id and port at the start of the `main` function.
 You may also need to change the `listen` value in the uvicorn configuration to match your setup.
 Press Ctrl-C on the command line or send a signal to the process to stop the bot.
 """
+import time
+
 import asyncio
 import html
 import logging
 from dataclasses import dataclass
 from http import HTTPStatus
 
-# import uvicorn
-# from starlette.applications import Starlette
-# from starlette.requests import Request
-# from starlette.responses import PlainTextResponse, Response
-# from starlette.routing import Route
+import uvicorn
+from starlette.applications import Starlette
+from starlette.requests import Request
+from starlette.responses import PlainTextResponse, Response
+from starlette.routing import Route
 
 import json
 import requests
-from django.http import JsonResponse
+from django.http import (
+    JsonResponse,
+    HttpResponse,
+    HttpRequest,
+)
 from django.views import View
-
-from views import TutorialBotView
+from django.core.management.base import BaseCommand
+from django.conf import settings
+# from testApp.views import TutorialBotView
+# from telegram.request import HttpRequest
 
 
 import os
@@ -132,30 +140,34 @@ async def main() -> None:
     """Set up the application and a custom webserver."""
     url = 'https://194-67-74-48.cloudvps.regruhosting.ru/webhook/'
     admin_chat_id = '3206063'
+    port = 8000
 
     context_types = ContextTypes(context=CustomContext)
+
     # Here we set updater to None because we want our custom webhook server to handle the updates
     # and hence we don't need an Updater instance
     application = (
         Application.builder().token(API_TOKEN).updater(None).context_types(context_types).build()
     )
+
     # save the values in `bot_data` such that we may easily access them in the callbacks
     application.bot_data["url"] = url
     application.bot_data["admin_chat_id"] = admin_chat_id
+
     # register handlers
     application.add_handler(CommandHandler("app", start))
     application.add_handler(TypeHandler(type=WebhookUpdate, callback=webhook_update))
 
 
-     # Set up webserver
-    async def telegram(request: request) -> Response:
+    # Set up webserver
+    async def telegram(request: Request) -> Response:
         """Handle incoming Telegram updates by putting them into the `update_queue`"""
         await application.update_queue.put(
             Update.de_json(data=await request.json(), bot=application.bot)
         )
         return Response()
 
-    async def custom_updates(request: request) -> PlainTextResponse:
+    async def custom_updates(request: Request) -> PlainTextResponse:
         """
         Handle incoming webhook updates by also putting them into the `update_queue` if
         the required parameters were passed correctly.
@@ -181,13 +193,49 @@ async def main() -> None:
         """For the health endpoint, reply with a simple plain text message."""
         return PlainTextResponse(content="The bot is still running fine :)")
 
+    starlette_app = Starlette(
+        routes=[
+            Route("/telegram", telegram, methods=["POST"]),
+            Route("/healthcheck", health, methods=["GET"]),
+            Route("/submitpayload", custom_updates, methods=["POST", "GET"]),
+        ]
+    )
+    webserver = uvicorn.Server(
+        config=uvicorn.Config(
+            app=starlette_app,
+            port=port,
+            use_colors=False,
+            host="127.0.0.1",
+        )
+    )
 
     # Run application and webserver together
     async with application:
         await application.start()
-        # await webserver.serve()
+        await asyncio.sleep(10)
+        await webserver.serve()
         await application.stop()
 
 
-if __name__ == "__main__":
-    asyncio.run(main())
+    # Run application and webserver together
+    # async with application:
+    #     try:
+    #         await application.start()
+    #         time.sleep(1000)
+    #         await application.stop()
+    #     # await webserver.serve()
+    #     except KeyboardInterrupt:
+    #         print("Program terminated manually!")
+    #         await application.stop()
+    #         raise SystemExit
+
+
+# if __name__ == "__main__":
+#     asyncio.run(main())
+
+class Command(BaseCommand):
+    help = 'HELP here'
+
+    def handle(self, *args, **options):
+        print('in handle')
+        asyncio.run(main())

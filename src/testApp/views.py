@@ -1,15 +1,17 @@
 from django.shortcuts import render
 
 import json
-import os
-import environ
-
 import requests
+
+import os
+from dotenv import load_dotenv
+from pathlib import Path
+
 from django.http import JsonResponse
 from django.views import View
 
 # from .models import tb_tutorial_collection
-from testApp.models import (
+from .models import (
     Profile,
     Message,
 )
@@ -17,15 +19,32 @@ from testApp.models import (
 from telegram import (
     InlineKeyboardButton,
     InlineKeyboardMarkup,
+    Update,
+    Bot,
+    BotCommand,
+)
+from telegram.ext import (
+    Application,
+    Updater,
+    CommandHandler,
+    CallbackQueryHandler,
+    ConversationHandler,
+    MessageHandler,
+    ContextTypes,
 )
 
-# Initialise environment variables
-env = environ.Env()
-environ.Env.read_env()
+# from testApp.management.commands.hardcode import add_queue
+from queue import Queue
+# from threading import Thread
+
+
+dotenv_path = Path('../django_project/.env')
+load_dotenv(dotenv_path=dotenv_path)
+
 
 TELEGRAM_URL = "https://api.telegram.org/bot"
 # TUTORIAL_BOT_TOKEN = '5497164468:AAEhn_kbJz-y0UDgWghSzlj8ktNsjmOUf3A'
-TUTORIAL_BOT_TOKEN = env('TOKEN')
+TUTORIAL_BOT_TOKEN = os.getenv('TOKEN')
 # os.getenv("TOKEN", "error_token")
 # print(TUTORIAL_BOT_TOKEN)
 # print(os.getenv("TOKEN"))
@@ -34,6 +53,8 @@ TUTORIAL_BOT_TOKEN = env('TOKEN')
 
 # https://api.telegram.org/bot<token>/setWebhook?url=<url>/webhooks/tutorial/
 # https://api.telegram.org/bot5497164468:AAEhn_kbJz-y0UDgWghSzlj8ktNsjmOUf3A/setWebhook?url=http://194.67.74.48/webhook/
+
+
 class TutorialBotView(View):
     def get(self, request, *args, **kwargs):
         return JsonResponse({"ok": "GET request processed"})
@@ -44,36 +65,28 @@ class TutorialBotView(View):
         # f.close()
 
         t_data = json.loads(request.body)
-        t_message = t_data["message"]
-        # t_text = t_message["text"]
-        t_chat = t_message["chat"]
-        t_username = t_chat["username"]
-        t_id = t_chat["id"]
+        if 'message' in t_data:
+            t_message = t_data["message"]
+            t_chat = t_message["chat"]
+            t_username = t_chat["username"]
+            t_id = t_chat["id"]
+        else:
+            t_message = 'empty'
+            t_chat = 'empty'
+            t_username = 'empty'
+            t_id = 3206063
 
-        try:
-            t_text = t_message["text"].strip().lower()
-        except Exception as e:
-            return JsonResponse({"ok": "POST request processed"})
+        # json_request_store(request)
 
-        p, _ = Profile.objects.get_or_create(
-            external_id=t_id,
-            defaults={
-                'name': t_username,
-            }
-        )
-        m = Message(
-            profile=p,
-            text=t_text,
-        )
-        m.save()
-
-
-
+        # add_queue(t_data)
         # text = text.lstrip("/")
-        chatIDtmp = t_data["message"]["chat"]["id"]
+        # chatIDtmp = t_data["message"]["chat"]["id"]
         # msg = request.body
-        msg = f"{t_data}" + f"HELLODUDE2222\n\n" + f"{t_text}"
-        self.send_message(msg, t_chat["id"])
+
+        # ### msg = f"{t_data}" + f"HELLODUDE2222\n\n"
+
+        #### self.send_message(msg, t_id)
+
         # chat = tb_tutorial_collection.find_one({"chat_id": t_chat["id"]})
         # if not chat:
         #     chat = {
@@ -101,26 +114,13 @@ class TutorialBotView(View):
 
         return JsonResponse({"ok": "POST request processed"})
 
-# {
-#     "inline_keyboard": [[
-#         {
-#             "text": "A",
-#             "callback_data": "A1"
-#         },
-#         {
-#             "text": "B",
-#             "callback_data": "C1"
-#         },
-#     ]]
-# },
-
     @staticmethod
     def send_message(message, chat_id):
         # keyboard = [
         #     [InlineKeyboardButton("Log In", callback_data=str("log_in"))],
         # ]
         # reply_markup = InlineKeyboardMarkup(keyboard)
-        reply_markup1 = "133313131323425342563245"
+        reply_markup1 = "133313131323425342563245\n\n" + message
         keyboard = {
             "inline_keyboard": [[
                 {

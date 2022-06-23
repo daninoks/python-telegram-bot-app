@@ -33,11 +33,11 @@ from telegram.ext import (
     ContextTypes,
 )
 
-# from testApp.management.commands.hardcode import add_queue
+# from testApp.management.commands.hardcode import telegram
 from queue import Queue
 # from threading import Thread
 
-
+# Init .env vars:
 dotenv_path = Path('../django_project/.env')
 load_dotenv(dotenv_path=dotenv_path)
 
@@ -45,14 +45,10 @@ load_dotenv(dotenv_path=dotenv_path)
 TELEGRAM_URL = "https://api.telegram.org/bot"
 # TUTORIAL_BOT_TOKEN = '5497164468:AAEhn_kbJz-y0UDgWghSzlj8ktNsjmOUf3A'
 TUTORIAL_BOT_TOKEN = os.getenv('TOKEN')
-# os.getenv("TOKEN", "error_token")
-# print(TUTORIAL_BOT_TOKEN)
-# print(os.getenv("TOKEN"))
-# print(env('TOKEN'))
-# TUTORIAL_BOT_TOKEN = "5497164468:AAEhn_kbJz-y0UDgWghSzlj8ktNsjmOUf3A"
+
 
 # https://api.telegram.org/bot<token>/setWebhook?url=<url>/webhooks/tutorial/
-# https://api.telegram.org/bot5497164468:AAEhn_kbJz-y0UDgWghSzlj8ktNsjmOUf3A/setWebhook?url=http://194.67.74.48/webhook/
+# https://api.telegram.org/bot5497164468:AAEhn_kbJz-y0UDgWghSzlj8ktNsjmOUf3A/setWebhook?url=https://194-67-74-48.cloudvps.regruhosting.ru/webhook/
 
 
 class TutorialBotView(View):
@@ -83,9 +79,9 @@ class TutorialBotView(View):
         # chatIDtmp = t_data["message"]["chat"]["id"]
         # msg = request.body
 
-        # ### msg = f"{t_data}" + f"HELLODUDE2222\n\n"
+        msg = f"{t_data}" + f"HELLODUDE2222\n\n"
 
-        #### self.send_message(msg, t_id)
+        self.send_message(msg, t_id)
 
         # chat = tb_tutorial_collection.find_one({"chat_id": t_chat["id"]})
         # if not chat:

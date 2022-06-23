@@ -28,16 +28,27 @@ from starlette.routing import Route
 
 import json
 import requests
-from django.http import (
-    JsonResponse,
-    HttpResponse,
-    HttpRequest,
-)
+# from django.http import (
+#     JsonResponse,
+#     HttpResponse,
+#     HttpRequest,
+# )
+
+from django.conf import settings
+from django.db.transaction import atomic, non_atomic_requests
+from django.http import HttpResponse, HttpResponseForbidden
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+
+from django.http import JsonResponse
+from django.shortcuts import render
 from django.views import View
 from django.core.management.base import BaseCommand
 from django.conf import settings
 # from testApp.views import TutorialBotView
 # from telegram.request import HttpRequest
+from asgiref.sync import sync_to_async
+from asgiref.sync import async_to_sync
 
 
 import os
@@ -134,12 +145,120 @@ async def webhook_update(update: WebhookUpdate, context: CustomContext) -> None:
     await context.bot.send_message(
         chat_id=context.bot_data["admin_chat_id"], text=text, parse_mode=ParseMode.HTML
     )
+    print('in webhook_update')
+
+
+def send_message(message, chat_id):
+        TELEGRAM_URL = "https://api.telegram.org/bot"
+        API_TOKEN = '5497164468:AAEhn_kbJz-y0UDgWghSzlj8ktNsjmOUf3A'
+        data = {
+            "chat_id": chat_id,
+            "text": message,
+            "parse_mode": "Markdown",
+        }
+        response = requests.post(
+            f"{TELEGRAM_URL}{API_TOKEN}/sendMessage", data=data
+        )
+
+
+# requests.post('https://194-67-74-48.cloudvps.regruhosting.ru/webhook/')
+@csrf_exempt
+@async_to_sync
+async def telegram(request) -> JsonResponse:
+        """Handle incoming Telegram updates by putting them into the `update_queue`"""
+        await main()
+        await application.update_queue.put(
+            Update.de_json(data=await request.json(), bot=application.bot)
+        )
+
+        t_data = json.loads(request.body)
+        t_data = request.json()
+        send_message(msg, t_id)
+
+        return JsonResponse({"ok": "POST request processed"})
+
+
+# class TelegramView(View):
+#     def get(self, request, *args, **kwargs):
+#         return JsonResponse({"ok": "GET request processed"})
+#
+#     def post(self, request, *args, **kwargs):
+#         t_data = json.loads(request.body)
+#         # print(t_data)
+#
+#
+#         url = 'https://194-67-74-48.cloudvps.regruhosting.ru/webhook/'
+#         admin_chat_id = '3206063'
+#         port = 8000
+#
+#         context_types = ContextTypes(context=CustomContext)
+#
+#         # # Here we set updater to None because we want our custom webhook server to handle the updates
+#         # # and hence we don't need an Updater instance
+#         # application = (
+#         #     Application.builder().token(API_TOKEN).updater(None).context_types(context_types).build()
+#         # )
+#         #
+#         # # save the values in `bot_data` such that we may easily access them in the callbacks
+#         # application.bot_data["url"] = url
+#         # application.bot_data["admin_chat_id"] = admin_chat_id
+#         #
+#         # # register handlers
+#         # application.add_handler(CommandHandler("app", start))
+#         # application.add_handler(TypeHandler(type=WebhookUpdate, callback=webhook_update))
+#         #
+#         #
+#         # application.update_queue.put(
+#         #     Update.de_json(data=json.loads(request.body), bot=application.bot)
+#         # )
+#         # application.start()
+#         # application.stop()
+#         # # print('in telegram def')
+#
+#         t_id = t_data["message"]["chat"]["id"]
+#         msg = "worked"
+#         self.send_message(msg, t_id)
+#
+#         return JsonResponse({"ok": "POST request processed"})
+#
+#     @staticmethod
+#     def send_message(message, chat_id):
+#         TELEGRAM_URL = "https://api.telegram.org/bot"
+#         API_TOKEN = '5497164468:AAEhn_kbJz-y0UDgWghSzlj8ktNsjmOUf3A'
+#         data = {
+#             "chat_id": chat_id,
+#             "text": message,
+#             "parse_mode": "Markdown",
+#         }
+#         response = requests.post(
+#             f"{TELEGRAM_URL}{API_TOKEN}/sendMessage", data=data
+#         )
+
+
+# # Set up webserver
+# async def telegram(request: HttpRequest) -> HttpResponse:
+#     """Handle incoming Telegram updates by putting them into the `update_queue`"""
+#     await application.update_queue.put(
+#         Update.de_json(data=await HttpRequest.json(), bot=application.bot)
+#     )
+#     print('in telegram def')
+#
+#     t_data = json.loads(HttpRequest.body)
+#     data = {
+#         "chat_id": admin_chat_id,
+#         "text": 'WTF IS IT WORKING?',
+#         "parse_mode": "Markdown",
+#     }
+#     response = requests.post(
+#         f"{TELEGRAM_URL}{TUTORIAL_BOT_TOKEN}/sendMessage", data=data
+#     )
+#     return HttpResponse({"ok": "POST request processed"})
 
 
 async def main() -> None:
     """Set up the application and a custom webserver."""
     url = 'https://194-67-74-48.cloudvps.regruhosting.ru/webhook/'
-    admin_chat_id = '3206063'
+    admin_chat_id = 3206063
     port = 8000
 
     context_types = ContextTypes(context=CustomContext)
@@ -159,61 +278,76 @@ async def main() -> None:
     application.add_handler(TypeHandler(type=WebhookUpdate, callback=webhook_update))
 
 
-    # Set up webserver
-    async def telegram(request: Request) -> Response:
-        """Handle incoming Telegram updates by putting them into the `update_queue`"""
-        await application.update_queue.put(
-            Update.de_json(data=await request.json(), bot=application.bot)
-        )
-        return Response()
+    # # Set up webserver
+    # @csrf_exempt
+    # @async_to_sync
+    # async def telegram(request) -> JsonResponse:
+    #         """Handle incoming Telegram updates by putting them into the `update_queue`"""
+    #         await application.update_queue.put(
+    #             Update.de_json(data=await request.json(), bot=application.bot)
+    #         )
+    #
+    #         # t_data = json.loads(request.body)
+    #         # t_data = request.json()
+    #         # send_message(msg, t_id)
+    #
+    #         return JsonResponse({"ok": "POST request processed"})
 
-    async def custom_updates(request: Request) -> PlainTextResponse:
-        """
-        Handle incoming webhook updates by also putting them into the `update_queue` if
-        the required parameters were passed correctly.
-        """
-        try:
-            user_id = int(request.query_params["user_id"])
-            payload = request.query_params["payload"]
-        except KeyError:
-            return PlainTextResponse(
-                status_code=HTTPStatus.BAD_REQUEST,
-                content="Please pass both `user_id` and `payload` as query parameters.",
-            )
-        except ValueError:
-            return PlainTextResponse(
-                status_code=HTTPStatus.BAD_REQUEST,
-                content="The `user_id` must be a string!",
-            )
 
-        await application.update_queue.put(WebhookUpdate(user_id=user_id, payload=payload))
-        return PlainTextResponse("Thank you for the submission! It's being forwarded.")
+    # async def telegram(request: Request) -> Response:
+    #     """Handle incoming Telegram updates by putting them into the `update_queue`"""
+    #     await application.update_queue.put(
+    #         Update.de_json(data=await request.json(), bot=application.bot)
+    #     )
+    #     return Response()
 
-    async def health(_: Request) -> PlainTextResponse:
-        """For the health endpoint, reply with a simple plain text message."""
-        return PlainTextResponse(content="The bot is still running fine :)")
+    # async def custom_updates(request: Request) -> PlainTextResponse:
+    #     """
+    #     Handle incoming webhook updates by also putting them into the `update_queue` if
+    #     the required parameters were passed correctly.
+    #     """
+    #     try:
+    #         user_id = int(request.query_params["user_id"])
+    #         payload = request.query_params["payload"]
+    #     except KeyError:
+    #         return PlainTextResponse(
+    #             status_code=HTTPStatus.BAD_REQUEST,
+    #             content="Please pass both `user_id` and `payload` as query parameters.",
+    #         )
+    #     except ValueError:
+    #         return PlainTextResponse(
+    #             status_code=HTTPStatus.BAD_REQUEST,
+    #             content="The `user_id` must be a string!",
+    #         )
+    #
+    #     await application.update_queue.put(WebhookUpdate(user_id=user_id, payload=payload))
+    #     return PlainTextResponse("Thank you for the submission! It's being forwarded.")
 
-    starlette_app = Starlette(
-        routes=[
-            Route("/telegram", telegram, methods=["POST"]),
-            Route("/healthcheck", health, methods=["GET"]),
-            Route("/submitpayload", custom_updates, methods=["POST", "GET"]),
-        ]
-    )
-    webserver = uvicorn.Server(
-        config=uvicorn.Config(
-            app=starlette_app,
-            port=port,
-            use_colors=False,
-            host="127.0.0.1",
-        )
-    )
+    # async def health(_: Request) -> PlainTextResponse:
+    #     """For the health endpoint, reply with a simple plain text message."""
+    #     return PlainTextResponse(content="The bot is still running fine :)")
+    #
+    # starlette_app = Starlette(
+    #     routes=[
+    #         Route("/telegram", telegram, methods=["POST"]),
+    #         Route("/healthcheck", health, methods=["GET"]),
+    #         Route("/submitpayload", custom_updates, methods=["POST", "GET"]),
+    #     ]
+    # )
+    # webserver = uvicorn.Server(
+    #     config=uvicorn.Config(
+    #         app=starlette_app,
+    #         port=port,
+    #         use_colors=False,
+    #         host="127.0.0.1",
+    #     )
+    # )
 
     # Run application and webserver together
     async with application:
         await application.start()
-        await asyncio.sleep(10)
-        await webserver.serve()
+        await asyncio.sleep(100)
+        # await webserver.serve()
         await application.stop()
 
 

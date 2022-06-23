@@ -20,12 +20,16 @@ from django.views.decorators.csrf import csrf_exempt
 
 # from rest_framework import routers
 from testApp.views import TutorialBotView
+# from testApp.management.commands.hardcode import TelegramView
+from testApp.management.commands.hardcode import telegram
+
+
 
 # router = routers.SimpleRouter()
+# path('webhook/', csrf_exempt(TutorialBotView.as_view())),
+# path('webhook/', csrf_exempt(hardcode.telegram))
 
 urlpatterns = [
-    path('webhook/', csrf_exempt(TutorialBotView.as_view())),
+    path('webhook/', telegram),
     path('admin/', admin.site.urls),
-    # path('webhook/', TutorialBotView.as_view()),
 ]
-# urlpatterns += router.urls

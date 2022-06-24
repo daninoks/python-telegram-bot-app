@@ -30,6 +30,6 @@ from testApp.management.commands.hardcode import telegram
 # path('webhook/', csrf_exempt(hardcode.telegram))
 
 urlpatterns = [
-    path('webhook/', telegram),
+    path('webhook/', csrf_exempt(TelegramBotWebhookView.as_view())),
     path('admin/', admin.site.urls),
 ]

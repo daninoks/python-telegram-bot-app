@@ -11,34 +11,45 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-import environ
+import sys
+import dotenv
+import logging
 
-# import logging
+from pathlib import Path
+# import dj_database_url
 
-# # Default logger:
-# logger = logging.getLogger(__name__)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+print(BASE_DIR)
 
-# Initialise environment variables
-env = environ.Env()
-environ.Env.read_env()
+# Load env variables from file
+dotenv_file = f"{BASE_DIR}/django_project/.env"
+# dotenv_file = Path(".env")
+if os.path.isfile(dotenv_file):
+    dotenv.load_dotenv(dotenv_file)
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = 'V3eouvgnGkmVR1RFn0exnojfYp7q5BxqZavQkpgg78il7EUQ5i9N5JBYW1Appf6X'
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
+if os.environ.get('DJANGO_DEBUG', default=False) in ['True', 'true', '1', True]:
+    DEBUG = True
+else:
+    DEBUG = False
+
 
 ALLOWED_HOSTS = ['194.67.74.48', '2a00:f940:2:4:2::a4f', '194-67-74-48.cloudvps.regruhosting.ru']
 
-# Application definition
 
+# Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -48,6 +59,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'testApp'
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -60,6 +72,17 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'django_project.urls'
+
+INTERNAL_IPS = [
+    # ...
+    '127.0.0.1',
+    # ...
+]
+
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+
 
 TEMPLATES = [
     {
@@ -77,17 +100,10 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'django_project.wsgi.application'
+ASGI_APPLICATION = 'dtb.asgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
-# DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#    }
-# }
 
 DATABASES = {
     'default': {
@@ -100,9 +116,9 @@ DATABASES = {
     }
 }
 
+
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -120,31 +136,39 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 #TIME_ZONE = 'UTC'
 TIME_ZONE = 'Europe/Moscow'
-
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
-
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
-# Bot settings:
-# TOKEN = '5497164468:AAEhn_kbJz-y0UDgWghSzlj8ktNsjmOUf3A'
-# os.environ['TOKEN'] = '5497164468:AAEhn_kbJz-y0UDgWghSzlj8ktNsjmOUf3A'
-TOKEN = env('TOKEN')
-# # Logging:
-# LOGGING = {
-#     'loggers': {
-#         'testApp.views': {
-#             ...
-#         },
-#     },
-# }
+
+# -----> CELERY
+REDIS_URL = os.getenv('REDIS_URL', 'redis://redis:6379')
+BROKER_URL = REDIS_URL
+CELERY_BROKER_URL = REDIS_URL
+CELERY_RESULT_BACKEND = REDIS_URL
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_TASK_DEFAULT_QUEUE = 'default'
+
+
+# -----> BOT
+TELEGRAM_TOKEN = os.getenv('TOKEN')
+if TELEGRAM_TOKEN is None:
+    logging.error(
+        "Please provide TELEGRAM_TOKEN in .env file.\n"
+        "Example of .env file: https://github.com/ohld/django-telegram-bot/blob/main/.env_example"
+    )
+    sys.exit(1)
+
+TELEGRAM_LOGS_CHAT_ID = os.getenv("TELEGRAM_LOGS_CHAT_ID", default=None)

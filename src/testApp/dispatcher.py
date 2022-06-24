@@ -21,10 +21,10 @@ from testApp.handlers.utils import error
 from testApp.handlers.admin import handlers as admin_handlers
 # from testApp.handlers.location import handlers as location_handlers
 from testApp.handlers.onboarding import handlers as onboarding_handlers
-# from testApp.handlers.broadcast_message import handlers as broadcast_handlers
+from testApp.handlers.broadcast_message import handlers as broadcast_handlers
 from testApp.handlers.onboarding.manage_data import SECRET_LEVEL_BUTTON
-# from testApp.handlers.broadcast_message.manage_data import CONFIRM_DECLINE_BROADCAST
-# from testApp.handlers.broadcast_message.static_text import broadcast_command
+from testApp.handlers.broadcast_message.manage_data import CONFIRM_DECLINE_BROADCAST
+from testApp.handlers.broadcast_message.static_text import broadcast_command
 
 
 def setup_dispatcher(dp):
@@ -47,12 +47,12 @@ def setup_dispatcher(dp):
     dp.add_handler(CallbackQueryHandler(onboarding_handlers.secret_level, pattern=f"^{SECRET_LEVEL_BUTTON}"))
     #
     # # broadcast message
-    # dp.add_handler(
-    #     MessageHandler(Filters.regex(rf'^{broadcast_command}(/s)?.*'), broadcast_handlers.broadcast_command_with_message)
-    # )
-    # dp.add_handler(
-    #     CallbackQueryHandler(broadcast_handlers.broadcast_decision_handler, pattern=f"^{CONFIRM_DECLINE_BROADCAST}")
-    # )
+    dp.add_handler(
+        MessageHandler(Filters.regex(rf'^{broadcast_command}(/s)?.*'), broadcast_handlers.broadcast_command_with_message)
+    )
+    dp.add_handler(
+        CallbackQueryHandler(broadcast_handlers.broadcast_decision_handler, pattern=f"^{CONFIRM_DECLINE_BROADCAST}")
+    )
     #
     # # files
     # dp.add_handler(MessageHandler(

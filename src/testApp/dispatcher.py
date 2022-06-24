@@ -18,11 +18,11 @@ from django_project.settings import TELEGRAM_TOKEN, DEBUG
 
 from testApp.handlers.utils import error
 # from testApp.handlers.utils import files,
-# from testApp.handlers.admin import handlers as admin_handlers
+from testApp.handlers.admin import handlers as admin_handlers
 # from testApp.handlers.location import handlers as location_handlers
 from testApp.handlers.onboarding import handlers as onboarding_handlers
 # from testApp.handlers.broadcast_message import handlers as broadcast_handlers
-# from testApp.handlers.onboarding.manage_data import SECRET_LEVEL_BUTTON
+from testApp.handlers.onboarding.manage_data import SECRET_LEVEL_BUTTON
 # from testApp.handlers.broadcast_message.manage_data import CONFIRM_DECLINE_BROADCAST
 # from testApp.handlers.broadcast_message.static_text import broadcast_command
 
@@ -35,16 +35,16 @@ def setup_dispatcher(dp):
     dp.add_handler(CommandHandler("start", onboarding_handlers.command_start))
 
     # admin commands
-    # dp.add_handler(CommandHandler("admin", admin_handlers.admin))
-    # dp.add_handler(CommandHandler("stats", admin_handlers.stats))
-    # dp.add_handler(CommandHandler('export_users', admin_handlers.export_users))
-    #
+    dp.add_handler(CommandHandler("admin", admin_handlers.admin))
+    dp.add_handler(CommandHandler("stats", admin_handlers.stats))
+    dp.add_handler(CommandHandler('export_users', admin_handlers.export_users))
+
     # # location
     # dp.add_handler(CommandHandler("ask_location", location_handlers.ask_for_location))
     # dp.add_handler(MessageHandler(Filters.location, location_handlers.location_handler))
     #
     # # secret level
-    # dp.add_handler(CallbackQueryHandler(onboarding_handlers.secret_level, pattern=f"^{SECRET_LEVEL_BUTTON}"))
+    dp.add_handler(CallbackQueryHandler(onboarding_handlers.secret_level, pattern=f"^{SECRET_LEVEL_BUTTON}"))
     #
     # # broadcast message
     # dp.add_handler(

@@ -16,8 +16,9 @@ from telegram.ext import (
 from django_project.celery import app  # event processing in async mode
 from django_project.settings import TELEGRAM_TOKEN, DEBUG
 
-from testApp.handlers.utils import files, error
-from testApp.handlers.admin import handlers as admin_handlers
+from testApp.handlers.utils import error
+# from testApp.handlers.utils import files,
+# from testApp.handlers.admin import handlers as admin_handlers
 # from testApp.handlers.location import handlers as location_handlers
 from testApp.handlers.onboarding import handlers as onboarding_handlers
 # from testApp.handlers.broadcast_message import handlers as broadcast_handlers
@@ -34,7 +35,7 @@ def setup_dispatcher(dp):
     dp.add_handler(CommandHandler("start", onboarding_handlers.command_start))
 
     # admin commands
-    dp.add_handler(CommandHandler("admin", admin_handlers.admin))
+    # dp.add_handler(CommandHandler("admin", admin_handlers.admin))
     # dp.add_handler(CommandHandler("stats", admin_handlers.stats))
     # dp.add_handler(CommandHandler('export_users', admin_handlers.export_users))
     #

@@ -57,7 +57,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'testApp'
+    'testApp',
+    'supportBot'
 ]
 
 
@@ -167,7 +168,13 @@ TELEGRAM_TOKEN = os.getenv('TOKEN')
 if TELEGRAM_TOKEN is None:
     logging.error(
         "Please provide TELEGRAM_TOKEN in .env file.\n"
-        "Example of .env file: https://github.com/ohld/django-telegram-bot/blob/main/.env_example"
+    )
+    sys.exit(1)
+
+TELEGRAM_TOKEN_SUPPORT = os.getenv('TOKEN_SUPPORT')
+if TELEGRAM_TOKEN_SUPPORT is None:
+    logging.error(
+        "Please provide TELEGRAM_TOKEN in .env file.\n"
     )
     sys.exit(1)
 

@@ -1,9 +1,9 @@
 from django.contrib import admin
 
-from .models import Profile
-from .models import Message
 
 from .forms import ProfileForm
+from .models import Profile
+from .models import Message
 
 from django.contrib import admin
 from django.http import HttpResponseRedirect
@@ -11,7 +11,8 @@ from django.shortcuts import render
 
 from django_project.settings import DEBUG
 
-from testApp.models import User
+from supportBot.models import User
+
 
 # Register your models here.
 @admin.register(Profile)
@@ -22,10 +23,6 @@ class ProfileAdmin(admin.ModelAdmin):
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
     list_display = ('id', 'profile', 'text', 'created_at')
-
-# @admin.register(UserSHA)
-# class ShaAdmin(admin.ModelAdmin):
-#     list_display = ('id', 'external_id', 'user_sha', 'created_at')
 
 
 @admin.register(User)
@@ -63,8 +60,3 @@ class UserAdmin(admin.ModelAdmin):
     #         return render(
     #             request, "admin/broadcast_message.html", {'form': form, 'title': u'Broadcast message'}
     #         )
-
-
-# @admin.register(Location)
-# class LocationAdmin(admin.ModelAdmin):
-#     list_display = ['id', 'user_id', 'created_at']

@@ -19,7 +19,8 @@ from django.urls import include
 from django.views.decorators.csrf import csrf_exempt
 
 # from rest_framework import routers
-from testApp.views import TelegramBotWebhookView
+# from testApp.views import TelegramBotWebhookView
+from supportBot.views import TelegramBotWebhookView
 # from testApp.management.commands.hardcode import TelegramView
 # from testApp.management.commands.hardcode import telegram
 

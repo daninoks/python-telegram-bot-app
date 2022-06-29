@@ -27,6 +27,8 @@ def extract_user_data_from_update(update: Update) -> Dict:
         user = update.callback_query.from_user.to_dict()
     elif update.callback_query is not None and update.callback_query.message is not None:
         user = update.callback_query.message.chat.to_dict()
+    # elif update.channel_post.chat.id is not None:
+    #     user = update.channel_post.chat.to_dict()
     else:
         raise Exception(f"Can't extract user data from update: {update}")
 
@@ -39,3 +41,7 @@ def extract_user_data_from_update(update: Update) -> Dict:
             if k in user and user[k] is not None
         },
     )
+
+
+# def extract_user_data_from_external_update(update: Update) -> Dict:
+#         """ python-telegram-bot's Update instance Channel/Group --> User info """

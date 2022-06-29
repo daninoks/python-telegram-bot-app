@@ -10,7 +10,7 @@ from telegram import Bot, Update, BotCommand
 from telegram.ext import (
     Updater, Dispatcher, Filters,
     CommandHandler, MessageHandler,
-    CallbackQueryHandler,
+    CallbackQueryHandler, RegexHandler,
 )
 
 from django_project.celery import app  # event processing in async mode
@@ -18,7 +18,8 @@ from django_project.settings import TELEGRAM_TOKEN_SUPPORT, DEBUG
 
 from supportBot.handlers.utils import error
 from supportBot.handlers.welcome_page import handlers as welcome_handlers
-
+from supportBot.handlers.welcome_page.manage_data import SUPPORT_BUTTON
+from supportBot.handlers.welcome_page.manage_data import BACK_MAINPAGE_BUTTON
 # from testApp.handlers.utils import files,
 # from testApp.handlers.admin import handlers as admin_handlers
 # # from testApp.handlers.location import handlers as location_handlers
@@ -31,10 +32,28 @@ from supportBot.handlers.welcome_page import handlers as welcome_handlers
 
 def setup_dispatcher(dp):
     """
-    Adding handlers for events from Telegram
+    Adding handlers for events from Telegram.
     """
     # onboarding
     dp.add_handler(CommandHandler("start", welcome_handlers.command_start))
+    dp.add_handler(CallbackQueryHandler(welcome_handlers.command_start_over, pattern=f"^{BACK_MAINPAGE_BUTTON}$"))
+
+    # support conversation:
+    dp.add_handler(CallbackQueryHandler(welcome_handlers.start_support_conversation_button, pattern=f"^{SUPPORT_BUTTON}$"))
+
+    # Message redirecting (all text passed from input line for now):
+    # dp.add_handler(CallbackQueryHandler(welcome_handlers.redirect_message_to_channel, pattern=".*"))
+    dp.add_handler(
+        MessageHandler(
+            Filters.reply, welcome_handlers.redirect_reply_back
+        )
+    )
+    dp.add_handler(
+        RegexHandler(
+            ".*", welcome_handlers.redirect_message_to_channel
+        )
+    )
+
 
     # admin commands
     # dp.add_handler(CommandHandler("admin", admin_handlers.admin))
@@ -86,7 +105,7 @@ def run_pooling():
     dp = updater.dispatcher
     dp = setup_dispatcher(dp)
 
-    bot_info = Bot(TELEGRAM_TOKEN).get_me()
+    bot_info = Bot(TELEGRAM_TOKEN_SUPPORT).get_me()
     bot_link = f"https://t.me/" + bot_info["username"]
 
     print(f"Pooling of '{bot_link}' started")

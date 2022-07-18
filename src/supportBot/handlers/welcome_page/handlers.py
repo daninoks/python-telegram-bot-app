@@ -3,6 +3,9 @@ from supportBot.handlers.welcome_page.manage_data import BACK_MAINPAGE_BUTTON
 
 import datetime
 
+import re
+import json
+
 from django.utils import timezone
 from telegram import ParseMode, Update
 from telegram.ext import CallbackContext
@@ -75,7 +78,6 @@ def redirect_message_to_channel(update: Update, context: CallbackContext) -> Non
     target_chat_username = "@WWUNDERGROUND"
 
     if update.message.chat.username is not None:
-
         update_dict = extract_user_data_from_update(update)
         user_id = update_dict['user_id']
         username = update_dict['username']
@@ -92,12 +94,14 @@ def redirect_message_to_channel(update: Update, context: CallbackContext) -> Non
         # update_to_text = dir(update.message.chat.username)
         # update_to_text = update.message.chat.username
         update_to_text = update.message.text
+        in_bot_mess_id = update.message.message_id
 
         forwarding_body = format(
             f"{update_to_text}\n" \
             f"\n" \
             f"<i>{first_name}</i> <i>{last_name}</i>\n" \
-            f"(#ID{user_id}) @{username}"
+            f"(#ID{user_id}) @{username}\n" \
+            f"<tg-spoiler>request ticket>>{in_bot_mess_id}</tg-spoiler>"
         )
 
         context.bot.send_message(
@@ -110,17 +114,50 @@ def redirect_message_to_channel(update: Update, context: CallbackContext) -> Non
 def redirect_reply_back(update: Update, context: CallbackContext) -> None:
     """Redirects reply from channel/discussion back to bot dialog"""
 
-    # user_id = extract_user_data_from_update(update)['user_id']
-    update_to_text = update.message.text
+    try:
+        """Send messages from Replies Group to BotUser"""
+        if update.message.sender_chat.type is not None:
+            old_ticket = update.message.reply_to_message.text.split('request ticket>>')[-1]
+            new_ticket = update.message.message_id
+            forwarding_body = format(f"{update.message.text}\n\n" \
+                            f"<tg-spoiler>request ticket>>{new_ticket}</tg-spoiler>"
+            )
 
-    context.bot.send_message(
-        3206063,
-        f"{update_to_text}"
-    )
+            context.bot.send_message(
+                3206063,
+                f"{forwarding_body}",
+                reply_to_message_id = old_ticket,
+                parse_mode=ParseMode.HTML
+            )
+    except:
+        """Send messages from from BotUser to Discussion tread in Group"""
+        target_chat_username = "@WWUChat"
 
-    # context.bot.forward_message(
-    #     chat_id=3206063,
-    #     from_chat_id=target_chat_username,
-    #     message_id=update.message_id,
-    #     disable_notification=False,
-    # )
+        if update.message.chat.username is not None:
+            update_dict = extract_user_data_from_update(update)
+            user_id = update_dict['user_id']
+            username = update_dict['username']
+
+            if 'first_name' in update_dict.keys():
+                first_name = update_dict['first_name']
+            else:
+                first_name = ""
+            if 'last_name' in update_dict.keys():
+                last_name = update_dict['last_name']
+            else:
+                last_name = ""
+
+        old_ticket = update.message.reply_to_message.text.split('request ticket>>')[-1]
+        new_ticket = update.message.message_id
+        forwarding_body = format( f"{update.message.text}\n\n" \
+                        f"<i>{first_name}</i> <i>{last_name}</i>\n" \
+                        f"(#ID{user_id}) @{username}\n" \
+                        f"<tg-spoiler>request ticket>>{new_ticket}</tg-spoiler>"
+        )
+
+        context.bot.send_message(
+            target_chat_username,
+            f"{forwarding_body}",
+            reply_to_message_id = old_ticket,
+            parse_mode=ParseMode.HTML
+        )

@@ -1,0 +1,145 @@
+{
+  'channel_chat_created': False,
+  'photo': [],
+  'delete_chat_photo': False,
+  'chat': {
+    'username': 'daninoks',
+    'type': 'private',
+    'id': 3206063,
+    'first_name': 'ダニエル'
+  },
+  'group_chat_created': False,
+  'entities': [],
+  'new_chat_photo': [],
+  'caption_entities': [],
+  'date': 1658072884,
+  'reply_to_message': {
+    'channel_chat_created': False,
+    'photo': [],
+    'delete_chat_photo': False,
+    'chat': {
+      'username': 'daninoks',
+      'type': 'private',
+      'id': 3206063,
+      'first_name': 'ダニエル'
+    },
+    'group_chat_created': False,
+    'entities': [{
+      'length': 10,
+      'offset': 1121,
+      'type': 'hashtag'
+    }, {
+      'length': 9,
+      'offset': 1133,
+      'type': 'mention'
+    }],
+    'new_chat_photo': [],
+    'caption_entities': [],
+    'date': 1658072734,
+    'new_chat_members': [],
+    'supergroup_chat_created': False,
+    'message_id': 1057,
+    'text': "{'channel_chat_created': False, 'photo': [], 'delete_chat_photo': False, 'chat': {'title': 'WWUChat', 'type': 'supergroup', 'id': -1001314698278}, 'group_chat_created': False, 'entities': [], 'new_chat_photo': [], 'caption_entities': [], 'date': 1658072734, 'reply_to_message': {'channel_chat_created': False, 'forward_date': 1658072727, 'photo': [], 'delete_chat_photo': False, 'chat': {'title': 'WWUChat', 'type': 'supergroup', 'id': -1001314698278}, 'group_chat_created': False, 'entities': [{'length': 4, 'offset': 7, 'type': 'italic'}, {'length': 10, 'offset': 15, 'type': 'hashtag'}, {'length': 9, 'offset': 27, 'type': 'mention'}], 'new_chat_photo': [], 'caption_entities': [], 'date': 1658072730, 'new_chat_members': [], 'supergroup_chat_created': False, 'sender_chat': {'title': 'World Wide Underground', 'username': 'WWUNDERGROUND', 'type': 'channel', 'id': -1001243783624}, 'message_id': 134, 'forward_from_chat': {'title': 'World Wide Underground', 'username': 'WWUNDERGROUND', 'type': 'channel', 'id': -1001243783624}, 'forward_from_message_id': 158, 'is_automatic_forward': True, 'text': '123 \\n \\nダニエル  \\n(#ID3206063) @daninoks', 'from': {'is_bot': False, 'id': 777000, 'first_name': 'Telegram'}}, 'new_chat_members': [], 'supergroup_chat_created': False, 'sender_chat': {'title': 'WWUChat', 'type': 'supergroup', 'id': -1001314698278}, 'message_id': 135, 'text': '123', 'from': {'username': 'GroupAnonymousBot', 'is_bot': True, 'id': 1087968824, 'first_name': 'Group'}}",
+    'from': {
+      'username': 'djangoechoechoBot',
+      'is_bot': True,
+      'id': 5497164468,
+      'first_name': 'test12344321'
+    }
+  },
+  'new_chat_members': [],
+  'supergroup_chat_created': False,
+  'message_id': 1058,
+  'text': 'reply_bot',
+  'from': {
+    'language_code': 'en',
+    'username': 'daninoks',
+    'is_bot': False,
+    'id': 3206063,
+    'first_name': 'ダニエル'
+  }
+}
+#
+#
+#
+{
+  'channel_chat_created': False,
+  'photo': [],
+  'delete_chat_photo': False,
+  'chat': {
+    'title': 'WWUChat',
+    'type': 'supergroup',
+    'id': -1001314698278
+  },
+  'group_chat_created': False,
+  'entities': [],
+  'new_chat_photo': [],
+  'caption_entities': [],
+  'date': 1658074276,
+  'reply_to_message': {
+    'channel_chat_created': False,
+    'forward_date': 1658074263,
+    'photo': [],
+    'delete_chat_photo': False,
+    'chat': {
+      'title': 'WWUChat',
+      'type': 'supergroup',
+      'id': -1001314698278
+    },
+    'group_chat_created': False,
+    'entities': [{
+      'length': 4,
+      'offset': 19,
+      'type': 'italic'
+    }, {
+      'length': 10,
+      'offset': 27,
+      'type': 'hashtag'
+    }, {
+      'length': 9,
+      'offset': 39,
+      'type': 'mention'
+    }],
+    'new_chat_photo': [],
+    'caption_entities': [],
+    'date': 1658074266,
+    'new_chat_members': [],
+    'supergroup_chat_created': False,
+    'sender_chat': {
+      'title': 'World Wide Underground',
+      'username': 'WWUNDERGROUND',
+      'type': 'channel',
+      'id': -1001243783624
+    },
+    'message_id': 136,
+    'forward_from_chat': {
+      'title': 'World Wide Underground',
+      'username': 'WWUNDERGROUND',
+      'type': 'channel',
+      'id': -1001243783624
+    },
+    'forward_from_message_id': 159,
+    'is_automatic_forward': True,
+    'text': 'send to channel \n \nダニエル  \n(#ID3206063) @daninoks',
+    'from': {
+      'is_bot': False,
+      'id': 777000,
+      'first_name': 'Telegram'
+    }
+  },
+  'new_chat_members': [],
+  'supergroup_chat_created': False,
+  'sender_chat': {
+    'title': 'WWUChat',
+    'type': 'supergroup',
+    'id': -1001314698278
+  },
+  'message_id': 137,
+  'text': 'reply in group',
+  'from': {
+    'username': 'GroupAnonymousBot',
+    'is_bot': True,
+    'id': 1087968824,
+    'first_name': 'Group'
+  }
+}

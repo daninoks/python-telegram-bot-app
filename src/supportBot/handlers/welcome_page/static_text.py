@@ -24,7 +24,7 @@ presentation_button_text: Dict[str, str] = {
     'ru': 'PDF-презентация'
 }
 
-back_button: Dict[str, str] = {
+back_button_text: Dict[str, str] = {
     'en': 'Back',
     'ru': 'Назад'
 }
@@ -50,6 +50,44 @@ start_not_created: Dict[str, str] = {
 }
 
 support_conversation_start: Dict[str, str] = {
-    'en': "Enter your question and click send.",
-    'ru': "Введите ваше обращение и нажмите отправить.."
+    'en': 'Enter your question and click send.',
+    'ru': 'Введите ваше обращение и нажмите отправить.'
+}
+
+redirect_message_forwarding_body: Dict[str, str] = {
+    'en': '{update_to_text}\n\n' \
+            '<i>{first_name}</i> <i>{last_name}</i>\n' \
+            '(#ID{user_id}) @{username}\n '\
+            '<tg-spoiler>request ticket>>{in_bot_mess_id}</tg-spoiler>',
+    'ru': '{update_to_text}\n\n' \
+            '<i>{first_name}</i> <i>{last_name}</i>\n' \
+            '(#ID{user_id}) @{username}\n '\
+            '<tg-spoiler>request ticket>>{in_bot_mess_id}</tg-spoiler>'
+}
+
+redirect_message_delivery_mess: Dict[str, str] = {
+    'en': '{first_name},\n' \
+            'Your message has been delivered to the support service.\n' \
+            'Experts will answer you very soon!\n\n' \
+            'Wait for a response or create another support thread with support - using the text input line',
+    'ru': '{first_name},\n' \
+            'Ваше сообщение доставлено в службу поддерки.\n' \
+            'Специалисты ответят Вам совсем скоро!\n\n' \
+            'Дождитесь ответа или создайте еще один сапорт-тред с поддеркой - используя строку ввода текста'
+}
+
+redirect_reply_forwarding_body: Dict[str, str] = {
+    'en': '{text}\n\n' \
+        'To continue the dialogue - reply to this message.\n' \
+        '<tg-spoiler>request ticket>>{new_ticket}</tg-spoiler>',
+    'ru': '{text}\n\n' \
+        'Чтобы продожить диалог - ответьте на это сообщение.\n' \
+        '<tg-spoiler>request ticket>>{new_ticket}</tg-spoiler>'
+}
+
+forbidden_own_reply: Dict[str, str] = {
+    'en': 'You cant reply on Your own and system messages.\n' \
+                'Please send regular message or answer existing ticket',
+    'ru': 'Вы не можете отвечать на свои собсвенные и систеные сообщения.\n' \
+                'Пожалуйста отправьте обычное сообщение или ответьте на существующее обращение'
 }

@@ -41,6 +41,7 @@ def setup_dispatcher(dp):
     # support conversation:
     dp.add_handler(CallbackQueryHandler(welcome_handlers.start_support_conversation_button, pattern=f"^{SUPPORT_BUTTON}$"))
 
+
     # Message redirecting (all text passed from input line for now):
     # dp.add_handler(CallbackQueryHandler(welcome_handlers.redirect_message_to_channel, pattern=".*"))
     dp.add_handler(
@@ -106,8 +107,8 @@ def run_pooling():
         https://api.telegram.org/bot{my_bot_token}/setWebhook?url={url_to_send_updates_to}
         https://api.telegram.org/bot5497164468:AAEhn_kbJz-y0UDgWghSzlj8ktNsjmOUf3A/setWebhook?url=https://194-67-74-48.cloudvps.regruhosting.ru/webhook/
 
-        https://api.telegram.org/bot{my_bot_token}/removeWebhook?url={url_to_send_updates_to}
-        https://api.telegram.org/bot5497164468:AAEhn_kbJz-y0UDgWghSzlj8ktNsjmOUf3A/removeWebhook?url=https://194-67-74-48.cloudvps.regruhosting.ru/webhook/
+        https://api.telegram.org/bot{my_bot_token}/deleteWebhook?url={url_to_send_updates_to}
+        https://api.telegram.org/bot5497164468:AAEhn_kbJz-y0UDgWghSzlj8ktNsjmOUf3A/deleteWebhook?url=https://194-67-74-48.cloudvps.regruhosting.ru/webhook/
     """
 
     """ Run bot in pooling mode """

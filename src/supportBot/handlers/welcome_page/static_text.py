@@ -39,6 +39,10 @@ presentation_button_url = "https://drive.google.com/file/d/1Y6Y75EeXHMhhkxSbigd_
 
 
     ##### MESSAGES TEXT #####
+banned_text_frame: Dict[str, str] = {
+    'en': 'Sadly, {first_name}, You are restricted from this bot!',
+    'ru': 'К сожалению, {first_name}, доступ к боту для Вас ограничен!'
+}
 start_created: Dict[str, str] = {
     'en': 'Sup, {first_name}!',
     'ru': 'Приветствую, {first_name}!'

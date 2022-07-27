@@ -144,3 +144,177 @@
 aaa
 
 request ticket >> 507
+
+
+
+
+
+
+{
+  'message_id': 609,
+  'chat': {
+    'username': 'WWUChat',
+    'id': -1001314698278,
+    'title': 'WWUChat',
+    'type': 'supergroup'
+  },
+  'supergroup_chat_created': False,
+  'channel_chat_created': False,
+  'photo': [],
+  'date': 1658230565,
+  'new_chat_members': [],
+  'has_protected_content': True,
+  'delete_chat_photo': False,
+  'text': '321',
+  'group_chat_created': False,
+  'new_chat_photo': [],
+  'reply_to_message': {
+    'message_id': 605,
+    'chat': {
+      'username': 'WWUChat',
+      'id': -1001314698278,
+      'title': 'WWUChat',
+      'type': 'supergroup'
+    },
+    'supergroup_chat_created': False,
+    'channel_chat_created': False,
+    'photo': [],
+    'date': 1658230444,
+    'new_chat_members': [],
+    'has_protected_content': True,
+    'delete_chat_photo': False,
+    'is_automatic_forward': True,
+    'text': '123\n\nダニエル \n(#ID3206063) @daninoks\nrequest ticket>>1754',
+    'forward_from_chat': {
+      'username': 'WWUNDERGROUND',
+      'id': -1001243783624,
+      'title': 'World Wide Underground',
+      'type': 'channel'
+    },
+    'group_chat_created': False,
+    'new_chat_photo': [],
+    'forward_from_message_id': 326,
+    'forward_date': 1658230441,
+    'caption_entities': [],
+    'entities': [{
+      'length': 4,
+      'type': 'italic',
+      'offset': 5
+    }, {
+      'length': 10,
+      'type': 'hashtag',
+      'offset': 12
+    }, {
+      'length': 9,
+      'type': 'mention',
+      'offset': 24
+    }, {
+      'length': 20,
+      'type': 'spoiler',
+      'offset': 34
+    }],
+    'sender_chat': {
+      'username': 'WWUNDERGROUND',
+      'id': -1001243783624,
+      'title': 'World Wide Underground',
+      'type': 'channel'
+    },
+    'from': {
+      'id': 777000,
+      'is_bot': False,
+      'first_name': 'Telegram'
+    }
+  },
+  'caption_entities': [],
+  'entities': [],
+  'from': {
+    'language_code': 'en',
+    'username': 'daninoks',
+    'id': 3206063,
+    'is_bot': False,
+    'first_name': 'ダニエル'
+  }
+}
+
+
+{
+  'id': '13769937139896538',
+  'data': 'FRC_RPL',
+  'message': {
+    'supergroup_chat_created': False,
+    'caption_entities': [],
+    'group_chat_created': False,
+    'entities': [{
+      'offset': 4,
+      'type': 'spoiler',
+      'length': 19
+    }],
+    'new_chat_members': [],
+    'channel_chat_created': False,
+    'new_chat_photo': [],
+    'reply_markup': {
+      'inline_keyboard': [
+        [{
+          'callback_data': 'BCK_MAIN',
+          'text': 'Назад'
+        }],
+        [{
+          'callback_data': 'FRC_RPL',
+          'text': 'Ответить'
+        }]
+      ]
+    },
+    'text': '32\n\nrequest ticket>>712',
+    'date': 1658323325,
+    'photo': [],
+    'chat': {
+      'first_name': 'ダニエル',
+      'username': 'daninoks',
+      'id': 3206063,
+      'type': 'private'
+    },
+    'message_id': 1943,
+    'reply_to_message': {
+      'supergroup_chat_created': False,
+      'caption_entities': [],
+      'group_chat_created': False,
+      'entities': [],
+      'new_chat_members': [],
+      'channel_chat_created': False,
+      'new_chat_photo': [],
+      'text': '123',
+      'date': 1658240624,
+      'photo': [],
+      'chat': {
+        'first_name': 'ダニエル',
+        'username': 'daninoks',
+        'id': 3206063,
+        'type': 'private'
+      },
+      'message_id': 1923,
+      'delete_chat_photo': False,
+      'from': {
+        'id': 3206063,
+        'is_bot': False,
+        'first_name': 'ダニエル',
+        'language_code': 'en',
+        'username': 'daninoks'
+      }
+    },
+    'delete_chat_photo': False,
+    'from': {
+      'id': 5497164468,
+      'is_bot': True,
+      'first_name': 'test12344321',
+      'username': 'djangoechoechoBot'
+    }
+  },
+  'chat_instance': '9073897629481592145',
+  'from': {
+    'id': 3206063,
+    'is_bot': False,
+    'first_name': 'ダニエル',
+    'language_code': 'en',
+    'username': 'daninoks'
+  }
+}

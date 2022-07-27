@@ -17,30 +17,30 @@ from django_project.celery import app  # event processing in async mode
 from django_project.settings import TELEGRAM_TOKEN_SUPPORT, DEBUG
 
 from supportBot.handlers.utils import error
+
 from supportBot.handlers.welcome_page import handlers as welcome_handlers
+from supportBot.handlers.admin import handlers as admin_handlers
+
 from supportBot.handlers.welcome_page.manage_data import SUPPORT_BUTTON
 from supportBot.handlers.welcome_page.manage_data import BACK_MAINPAGE_BUTTON
-# from testApp.handlers.utils import files,
-# from testApp.handlers.admin import handlers as admin_handlers
-# # from testApp.handlers.location import handlers as location_handlers
-# from testApp.handlers.onboarding import handlers as onboarding_handlers
-# from testApp.handlers.broadcast_message import handlers as broadcast_handlers
-# from testApp.handlers.onboarding.manage_data import SECRET_LEVEL_BUTTON
-# from testApp.handlers.broadcast_message.manage_data import CONFIRM_DECLINE_BROADCAST
-# from testApp.handlers.broadcast_message.static_text import broadcast_command
+
 
 
 def setup_dispatcher(dp):
     """
     Adding handlers for events from Telegram.
     """
-    # onboarding
+    # start commands;:
     dp.add_handler(CommandHandler("start", welcome_handlers.command_start))
     dp.add_handler(CallbackQueryHandler(welcome_handlers.command_start_over, pattern=f"^{BACK_MAINPAGE_BUTTON}$"))
+    dp.add_handler(CommandHandler("admin", admin_handlers.command_admin))
 
     # support conversation:
     dp.add_handler(CallbackQueryHandler(welcome_handlers.start_support_conversation_button, pattern=f"^{SUPPORT_BUTTON}$"))
 
+    # Ban/Unban user:
+    dp.add_handler(CommandHandler("ban", admin_handlers.command_ban))
+    dp.add_handler(CommandHandler("unban", admin_handlers.command_unban))
 
     # Message redirecting (all text passed from input line for now):
     # dp.add_handler(CallbackQueryHandler(welcome_handlers.redirect_message_to_channel, pattern=".*"))

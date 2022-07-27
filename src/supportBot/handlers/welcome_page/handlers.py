@@ -21,15 +21,20 @@ def command_start(update: Update, context: CallbackContext) -> None:
     """Handle start command"""
     u, created = User.get_user_and_created(update, context)
 
-    if created:
-        text = static_text.start_created[u.language_code].format(first_name=u.first_name)
+    if u.is_blocked_bot:
+        print("user blocked")
+        update.message.reply_text(
+            text=static_text.banned_text_frame[u.language_code].format(first_name=u.first_name),
+        )
     else:
-        text = static_text.start_not_created[u.language_code].format(first_name=u.first_name)
-
-    update.message.reply_text(
-        text=text,
-        reply_markup=keyboards.make_keyboard_for_start_command(u.language_code)
-    )
+        if created:
+            text = static_text.start_created[u.language_code].format(first_name=u.first_name)
+        else:
+            text = static_text.start_not_created[u.language_code].format(first_name=u.first_name)
+        update.message.reply_text(
+            text=text,
+            reply_markup=keyboards.make_keyboard_for_start_command(u.language_code)
+        )
 
 
 def command_start_over(update: Update, context: CallbackContext) -> None:

@@ -64,6 +64,24 @@ class User(CreateUpdateTracker):
             return cls.objects.filter(user_id=int(username)).first()
         return cls.objects.filter(username__iexact=username).first()
 
+    @classmethod
+    def set_banned_true(cls, username_or_user_id: Union[str, int]) -> Optional[User]:
+        """ Search user in DB, return User or None if not found """
+        # username = str(username_or_user_id).replace("@", "").strip().lower()
+        u = cls.get_user_by_username_or_user_id(username_or_user_id)
+        u.is_blocked_bot = True
+        u.save()
+        return u
+
+    @classmethod
+    def set_banned_false(cls, username_or_user_id: Union[str, int]) -> Optional[User]:
+        """ Search user in DB, return User or None if not found """
+        # username = str(username_or_user_id).replace("@", "").strip().lower()
+        u = cls.get_user_by_username_or_user_id(username_or_user_id)
+        u.is_blocked_bot = False
+        u.save()
+        return u
+
     @property
     def invited_users(self) -> QuerySet[User]:
         return User.objects.filter(deep_link=str(self.user_id), created_at__gt=self.created_at)
@@ -73,6 +91,7 @@ class User(CreateUpdateTracker):
         if self.username:
             return f'@{self.username}'
         return f"{self.first_name} {self.last_name}" if self.last_name else f"{self.first_name}"
+
 
 class Profile(models.Model):
     external_id = models.PositiveIntegerField(
